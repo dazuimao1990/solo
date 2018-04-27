@@ -7,7 +7,9 @@ ADD . /tmp
 RUN cd /tmp && mvn install -Pci && mv target/solo/* /opt/b3log/solo/ \
     && mkdir -p /opt/b3log/backup/ && mkdir -p /opt/b3log/tmp/ \
     && rm -rf /opt/b3log/solo/WEB-INF/classes/local.properties /opt/b3log/solo/WEB-INF/classes/mail.properties /opt/b3log/solo/WEB-INF/classes/latke.properties \
-    && rm -rf /tmp/* && rm -rf ~/.m2 && apt-get update && apt-get install mysql-client -y
+    && rm -rf /tmp/* && rm -rf ~/.m2 \
+    && apt-get update && apt-get install -y --no-install-recommends mysql-client \
+    && rm -rf /var/lib/apt/lists/*
 
 ADD ./src/main/resources/docker/entrypoint.sh $WORKDIR
 ADD ./src/main/resources/docker/local.properties.h2 /opt/b3log/tmp
