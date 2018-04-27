@@ -33,7 +33,7 @@ if [ ! -f "/opt/b3log/solo/WEB-INF/classes/local.properties" ]; then
 fi
 
 java -cp WEB-INF/lib/*:WEB-INF/classes \
--javaagent:$PINPOINT_AGENT_PATH/pinpoint-bootstrap-${PINPOINT_AGETN_VERSION}.jar \
+-javaagent:$PINPOINT_AGENT_PATH/pinpoint-bootstrap-${PINPOINT_AGETN_VERSION}-SNAPSHOT.jar \
 -Dpinpoint.agentId=${AGENT_ID:-${SERVICE_ID:-20150415}} \
 -Dpinpoint.applicationName=${APP_NAME:-${SERVICE_NAME:-$HOSTNAME}} \
 org.b3log.solo.Starter
