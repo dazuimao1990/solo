@@ -7,11 +7,11 @@ DATEBASE_TYPE=${DATEBASE_TYPE:-h2}
 if [ ! -f "/opt/b3log/solo/WEB-INF/classes/local.properties" ]; then
     if [ "$DATABASE_TYPE" == "mysql" ]; then
         cat /opt/b3log/tmp/local.properties.mysql | sed \
-         -e "s|{{DATABASE_HOST}}|${DATABASE_HOST}|g" \
-         -e "s|{{DATABASE_PORT}}|${DATABASE_PORT:-3306}|g" \
-         -e "s|{{DATABASE_NAME}}|${DATABASE_NAME:-solo}|g" \
-         -e "s|{{DATABASE_USERNAME}}|${DATABASE_USERNAME:-root}|g" \
-         -e "s|{{DATABASE_PASSWORD}}|${DATABASE_PASSWORD}|g" \
+         -e "s|{{DATABASE_HOST}}|${MYSQL_HOST}|g" \
+         -e "s|{{DATABASE_PORT}}|${MYSQL_PORT:-3306}|g" \
+         -e "s|{{DATABASE_NAME}}|${MYSQL_DATABASE:-solo}|g" \
+         -e "s|{{DATABASE_USERNAME}}|${MYSQL_USER:-root}|g" \
+         -e "s|{{DATABASE_PASSWORD}}|${MYSQL_PASS}|g" \
          > /opt/b3log/solo/WEB-INF/classes/local.properties
     else
         cp /opt/b3log/tmp/local.properties.h2 /opt/b3log/solo/WEB-INF/classes/local.properties
@@ -19,7 +19,7 @@ if [ ! -f "/opt/b3log/solo/WEB-INF/classes/local.properties" ]; then
 
     cat /opt/b3log/tmp/latke.properties | sed \
      -e "s|{{SERVER_SCHMEA}}|${SERVER_SCHMEA:-http}|g" \
-     -e "s|{{SERVER_NAME}}|${SERVER_NAME:-localhost}|g" \
+     -e "s|{{SERVER_NAME}}|${DEFAULT_DOMAIN:-localhost}|g" \
     > /opt/b3log/solo/WEB-INF/classes/latke.properties
 	
     cat /opt/b3log/tmp/mail.properties | sed \
@@ -31,9 +31,11 @@ if [ ! -f "/opt/b3log/solo/WEB-INF/classes/local.properties" ]; then
     > /opt/b3log/solo/WEB-INF/classes/mail.properties
     rm -rf /opt/b3log/tmp
 fi
-
-java -cp WEB-INF/lib/*:WEB-INF/classes \
--javaagent:$PINPOINT_AGENT_PATH/pinpoint-bootstrap-${PINPOINT_AGETN_VERSION}-SNAPSHOT.jar \
--Dpinpoint.agentId=${AGENT_ID:-20150415}} \
--Dpinpoint.applicationName=${APP_NAME:-${SERVICE_NAME:-$HOSTNAME}} \
-org.b3log.solo.Starter
+if [ "${ENABLE_APM}" == "true" ]; then
+    java -cp WEB-INF/lib/*:WEB-INF/classes \
+    -javaagent:$PINPOINT_AGENT_PATH/pinpoint-bootstrap-${PINPOINT_AGETN_VERSION}-SNAPSHOT.jar \
+    -Dpinpoint.agentId=${AGENT_ID:-20150415} \
+    -Dpinpoint.applicationName=${APP_NAME:-${SERVICE_NAME:-$HOSTNAME}} \
+    org.b3log.solo.Starter
+else
+    java -cp WEB-INF/lib/*:WEB-INF/classes org.b3log.solo.Starter
