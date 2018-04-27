@@ -33,9 +33,10 @@ if [ ! -f "/opt/b3log/solo/WEB-INF/classes/local.properties" ]; then
 fi
 if [ "${ENABLE_APM}" == "true" ]; then
     java -cp WEB-INF/lib/*:WEB-INF/classes \
-    -javaagent:$PINPOINT_AGENT_PATH/pinpoint-bootstrap-${PINPOINT_AGETN_VERSION}-SNAPSHOT.jar \
-    -Dpinpoint.agentId=${AGENT_ID:-20150415} \
-    -Dpinpoint.applicationName=${APP_NAME:-${SERVICE_NAME:-$HOSTNAME}} \
-    org.b3log.solo.Starter
+     -javaagent:$PINPOINT_AGENT_PATH/pinpoint-bootstrap-${PINPOINT_AGETN_VERSION}-SNAPSHOT.jar \
+     -Dpinpoint.agentId=${AGENT_ID:-20150415} \
+     -Dpinpoint.applicationName=${APP_NAME:-${SERVICE_NAME:-$HOSTNAME}} \
+     org.b3log.solo.Starter
 else
     java -cp WEB-INF/lib/*:WEB-INF/classes org.b3log.solo.Starter
+fi
