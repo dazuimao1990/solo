@@ -14,8 +14,8 @@ ADD ./src/main/resources/docker/local.properties.h2 /opt/b3log/tmp
 ADD ./src/main/resources/docker/local.properties.mysql /opt/b3log/tmp
 ADD ./src/main/resources/docker/mail.properties /opt/b3log/tmp
 ADD ./src/main/resources/docker/latke.properties /opt/b3log/tmp
-ENV PINPOINT_AGETN_VERSION="1.7.2"
-ENV PINPOINT_AGENT_PATH="/usr/local/pinpoint-agent"
+ENV PINPOINT_AGETN_VERSION=1.7.2
+ENV PINPOINT_AGENT_PATH=/usr/local/pinpoint-agent
 RUN mkdir -pv $PINPOINT_AGENT_PATH \
     && curl -ks https://pkg.goodrain.com/apps/pinpoint/pinpoint-agent-${PINPOINT_AGETN_VERSION}-SNAPSHOT.tar.gz | tar xz -C /usr/local/pinpoint-agent
 
